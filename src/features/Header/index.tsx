@@ -7,10 +7,14 @@ const Header = () => {
   const router = useRouter();
   const [loginUser, setLoginUser] = useState(false);
 
+  const cookie = Cookies.get('userToken');
   useEffect(() => {
-    const cookie = Cookies.get('userToken');
-    console.log(`토큰 존재여부 확인: ${cookie}`);
-  }, []);
+    if (cookie) {
+      setLoginUser(true);
+    } else {
+      setLoginUser(false);
+    }
+  }, [cookie]);
   const logOut = () => {
     Cookies.remove('userToken');
     router.push('/');

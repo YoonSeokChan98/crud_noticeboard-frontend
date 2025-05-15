@@ -3,3 +3,8 @@ export interface SignupType {
   userSocialId: string;
   userPassword: string;
 }
+
+export interface LoginType {
+  userSocialId: string;
+  userPassword: string;
+}

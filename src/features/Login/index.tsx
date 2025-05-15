@@ -1,39 +1,43 @@
-import { useRouter } from 'next/router';
-import { SignUpStyled } from './styled';
+import { ToastContainer, toast } from 'react-toastify';
+import { LoginStyled } from './styled';
 import { useFormik } from 'formik';
 import { Button, Input } from 'antd';
-import { postSignup } from '@/pages/api/userApi';
-import { ToastContainer, toast } from 'react-toastify';
 import Password from 'antd/es/input/Password';
+import { postLogin } from '@/pages/api/userApi';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
-const SignUp = () => {
+const Login = () => {
   const router = useRouter();
 
   const formInitialValues = {
-    userName: '',
     userSocialId: '',
     userPassword: '',
   };
-  const signupFormik = useFormik({
+
+  const loginFormik = useFormik({
     initialValues: formInitialValues,
     onSubmit: async (values) => {
-      const { userName, userSocialId, userPassword } = values;
+      const { userSocialId, userPassword } = values;
       try {
-        const response = await postSignup({ userName, userSocialId, userPassword });
-        signupFormik.resetForm();
+        const response = await postLogin({ userSocialId, userPassword });
+        loginFormik.resetForm();
         if (response.result === true) {
+          if (response.data.token) {
+            Cookies.set('userToken', response.data.token, { expires: 1 });
+          }
           toast.success(`${response.message}`);
           router.push('/');
         } else {
           toast.error(`${response.message}`);
         }
       } catch (error) {
-        console.error(`회원가입 에러: ${error}`);
+        console.error(error);
       }
     },
   });
   return (
-    <SignUpStyled>
+    <LoginStyled>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -43,17 +47,13 @@ const SignUp = () => {
         draggable
         pauseOnFocusLoss
       />
-      <form onSubmit={signupFormik.handleSubmit}>
-        <div>
-          <label>이름</label>
-          <Input id="userName" onChange={signupFormik.handleChange} value={signupFormik.values.userName} required />
-        </div>
+      <form onSubmit={loginFormik.handleSubmit}>
         <div>
           <label>아이디</label>
           <Input
             id="userSocialId"
-            onChange={signupFormik.handleChange}
-            value={signupFormik.values.userSocialId}
+            onChange={loginFormik.handleChange}
+            value={loginFormik.values.userSocialId}
             required
           />
         </div>
@@ -61,17 +61,15 @@ const SignUp = () => {
           <label>비밀번호</label>
           <Password
             id="userPassword"
-            onChange={signupFormik.handleChange}
-            value={signupFormik.values.userPassword}
+            onChange={loginFormik.handleChange}
+            value={loginFormik.values.userPassword}
             required
           />
         </div>
-        <div>
-          <Button htmlType="submit">확인</Button>
-        </div>
+        <Button htmlType="submit">로그인</Button>
       </form>
-    </SignUpStyled>
+    </LoginStyled>
   );
 };
 
-export default SignUp;
+export default Login;
