@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import { SignUpStyled } from './styled';
 import { useFormik } from 'formik';
-import Password from 'antd/es/input/Password';
 import { Button, Input } from 'antd';
 import { postSignup } from '@/pages/api/userApi';
 import { ToastContainer, toast } from 'react-toastify';
+import Password from 'antd/es/input/Password';
 
 const SignUp = () => {
   const router = useRouter();
@@ -59,8 +59,7 @@ const SignUp = () => {
         </div>
         <div>
           <label htmlFor="usernameInput">비밀번호</label>
-          <Input
-            type="password"
+          <Password
             id="userPassword"
             onChange={signupFormik.handleChange}
             value={signupFormik.values.userPassword}
