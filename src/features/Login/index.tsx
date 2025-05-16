@@ -6,9 +6,13 @@ import Password from 'antd/es/input/Password';
 import { postLogin } from '@/pages/api/userApi';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { loginSuccess } from '@/redux/slices/userSlices';
 
 const Login = () => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const formInitialValues = {
     userSocialId: '',
@@ -22,11 +26,30 @@ const Login = () => {
       try {
         const response = await postLogin({ userSocialId, userPassword });
         loginFormik.resetForm();
-        if (response.result === true) {
-          if (response.data.token) {
-            Cookies.set('userToken', response.data.token, { expires: 1 });
-          }
+
+        if (response.result === false) {
+          toast.error(`${response.message}`);
+        }
+
+        if (response.data.token) {
+          Cookies.set('userToken', response.data.token, {
+            expires: 1, // 만료 시간 하루
+            secure: true, // HTTPS에서만 전송
+            sameSite: 'Strict', // CSRF 공격 방지
+            path: '/', // 쿠키의 유효 경로
+          });
+
+          dispatch(
+            loginSuccess({
+              userName: response.data.user.userName,
+              userSocialId: response.data.user.userSocialId,
+              userToken: response.data.user.userToken,
+            })
+          );
+
           toast.success(`${response.message}`);
+
+          loginFormik.resetForm();
           router.push('/');
         } else {
           toast.error(`${response.message}`);
@@ -38,15 +61,6 @@ const Login = () => {
   });
   return (
     <LoginStyled>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        pauseOnFocusLoss
-      />
       <form onSubmit={loginFormik.handleSubmit}>
         <div>
           <label>아이디</label>

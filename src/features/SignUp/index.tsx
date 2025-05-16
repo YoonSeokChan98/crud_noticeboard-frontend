@@ -34,15 +34,6 @@ const SignUp = () => {
   });
   return (
     <SignUpStyled>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        pauseOnFocusLoss
-      />
       <form onSubmit={signupFormik.handleSubmit}>
         <div>
           <label>이름</label>
