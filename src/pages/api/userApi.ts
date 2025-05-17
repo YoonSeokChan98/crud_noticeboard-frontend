@@ -1,4 +1,4 @@
-import { LoginType, SignupType } from '@/types';
+import { LoginType, SignupType, getUserDataType } from '@/types';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:4000';
@@ -22,3 +22,14 @@ export const postLogin = async (userData: LoginType) => {
     console.error(`에러: ${error}`);
   }
 };
+
+// 유저 조회
+export const getUser = async ({ userSocialId }: { userSocialId: string | undefined }) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/user/get-user`, { params: { userSocialId } });
+    return response.data;
+  } catch (error) {
+    console.error(`에러: ${error}`);
+  }
+};
+

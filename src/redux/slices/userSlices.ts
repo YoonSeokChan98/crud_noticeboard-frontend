@@ -4,6 +4,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 const initialState: UserStateType = {
   isLoggedIn: false,
   userInfo: {
+    userId: 0,
     userName: '',
     userSocialId: '',
     userToken: '',
@@ -17,6 +18,7 @@ export const userSlice = createSlice({
     loginSuccess: (
       state,
       action: PayloadAction<{
+        userId: Number;
         userName: string;
         userSocialId: string;
         userToken: string;

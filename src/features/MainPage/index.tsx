@@ -1,3 +1,4 @@
+import PostList from '@/components/PostList';
 import { MainPageStyled } from './styled';
 
 const MainPage = () => {
@@ -5,6 +6,7 @@ const MainPage = () => {
     <MainPageStyled>
       <div className="mainWrap">
         <div>메인페이지 입니다.</div>
+        <PostList />
       </div>
     </MainPageStyled>
   );

@@ -41,6 +41,7 @@ const Login = () => {
 
           dispatch(
             loginSuccess({
+              userId: response.data.user.id,
               userName: response.data.user.userName,
               userSocialId: response.data.user.userSocialId,
               userToken: response.data.user.userToken,
