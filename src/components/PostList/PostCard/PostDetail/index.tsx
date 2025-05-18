@@ -76,7 +76,6 @@ const PostDetail = () => {
         const response = await updatePost({ postTitle, postContent, id: postId });
         setEdit(false);
         editPostFormik.resetForm();
-        router.push('/');
       } catch (error) {
         console.error(error);
       }
@@ -97,6 +96,7 @@ const PostDetail = () => {
               <div>{postUserSocialId}</div>
             </div>
             <div className="PostDetailTitle">
+            <div className="BoldFont">제목: </div>
               <Input
                 id="postTitle"
                 onChange={editPostFormik.handleChange}
@@ -115,9 +115,9 @@ const PostDetail = () => {
               />
             </div>
             {editPermission && (
-              <>
+              <div className='PostBtn'>
                 <Button htmlType="submit">저장하기</Button>
-              </>
+              </div>
             )}
           </form>
         </>
@@ -137,14 +137,14 @@ const PostDetail = () => {
               <div>{postTitle}</div>
             </div>
             <div className="PostDetailContent">
-              <div className="BoldFont">내용: </div>
+              <div className="BoldFont">내용 </div>
               <div>{postContent}</div>
             </div>
             {editPermission && (
-              <>
+              <div className='PostBtn'>
                 <Button onClick={handleEditClick}>수정하기</Button>
                 <Button onClick={handleDeleteClick}>삭제하기</Button>
-              </>
+              </div>
             )}
           </div>
         </>

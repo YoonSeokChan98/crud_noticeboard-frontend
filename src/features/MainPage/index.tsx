@@ -5,7 +5,6 @@ const MainPage = () => {
   return (
     <MainPageStyled>
       <div className="mainWrap">
-        <div>메인페이지 입니다.</div>
         <PostList />
       </div>
     </MainPageStyled>

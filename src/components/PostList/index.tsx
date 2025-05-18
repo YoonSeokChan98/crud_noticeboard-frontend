@@ -34,14 +34,13 @@ const PostList = () => {
 
   return (
     <PostListStyled>
-      <div>
-        <div>게시글 리스트</div>
+      <div className="PostListWrap">
         {posts?.length > 0 ? (
           posts?.map((x: any, i: number) => <PostCard key={i} item={x} />)
         ) : (
           <div>작성된 글이 없습니다.</div>
         )}
-        <Button onClick={writeClick}>작성하기</Button>
+        <Button className='WritePostBtn' onClick={writeClick}>작성하기</Button>
       </div>
     </PostListStyled>
   );
