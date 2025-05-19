@@ -2,12 +2,9 @@ import { deletePost, getOnePost, updatePost } from '@/pages/api/postApi';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { PostDetailStyled } from './styled';
-import { getUser } from '@/pages/api/userApi';
 import { Button, Input } from 'antd';
 import { useFormik } from 'formik';
 import TextArea from 'antd/es/input/TextArea';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -75,6 +72,9 @@ const PostDetail = () => {
       try {
         const response = await updatePost({ postTitle, postContent, id: postId });
         setEdit(false);
+        setPostTitle(response.data[0].postTitle);
+        setPostContent(response.data[0].postContent);
+        console.log('🚀 ~ onSubmit: ~ response:', response);
         editPostFormik.resetForm();
       } catch (error) {
         console.error(error);
@@ -96,7 +96,7 @@ const PostDetail = () => {
               <div>{postUserSocialId}</div>
             </div>
             <div className="PostDetailTitle">
-            <div className="BoldFont">제목: </div>
+              <div className="BoldFont">제목: </div>
               <Input
                 id="postTitle"
                 onChange={editPostFormik.handleChange}
@@ -115,7 +115,7 @@ const PostDetail = () => {
               />
             </div>
             {editPermission && (
-              <div className='PostBtn'>
+              <div className="PostBtn">
                 <Button htmlType="submit">저장하기</Button>
               </div>
             )}
@@ -141,7 +141,7 @@ const PostDetail = () => {
               <div>{postContent}</div>
             </div>
             {editPermission && (
-              <div className='PostBtn'>
+              <div className="PostBtn">
                 <Button onClick={handleEditClick}>수정하기</Button>
                 <Button onClick={handleDeleteClick}>삭제하기</Button>
               </div>
